@@ -4,15 +4,27 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 )
 
-func TestHandleGet(t *testing.T) {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/post/", handleRequest)
+var mux *http.ServeMux
+var writer *httptest.ResponseRecorder
 
-	writer := httptest.NewRecorder()
+func TestMain(m *testing.M) {
+	setUp()
+	code := m.Run()
+	os.Exit(code)
+}
+
+func setUp() {
+	mux = http.NewServeMux()
+	mux.HandleFunc("/post/", handleRequest)
+	writer = httptest.NewRecorder()
+}
+
+func TestHandleGet(t *testing.T) {
 	request, _ := http.NewRequest("GET", "/post/8", nil)
 	mux.ServeHTTP(writer, request)
 
@@ -27,10 +39,6 @@ func TestHandleGet(t *testing.T) {
 }
 
 func TestHandlePut(t *testing.T) {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/post/", handleRequest)
-
-	writer := httptest.NewRecorder()
 	json := strings.NewReader(`{"content":"Updated post","author":"Sau Sheong"}`)
 	request, _ := http.NewRequest("PUT", "/post/8", json)
 	mux.ServeHTTP(writer, request)
