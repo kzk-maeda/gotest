@@ -1,0 +1,29 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - 5555:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+    tty: true
+    restart: always
+    user: root
+    volumes:
+      - ./database:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    #   - /etc/localtime:/etc/localtime:ro
+  pgweb:
+    image: sosedoff/pgweb
+    container_name: pgweb
+    ports: 
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=postgres://root:password@postgres:5432/gochat?sslmode=disable
+    links: 
+      - postgres:postgres
+    restart: always
+    depends_on:
+      - postgres
