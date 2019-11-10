@@ -8,3 +8,5 @@ create table posts (
   content text,
   author  varchar(255)
 );
+
+insert into posts (content, author) values ('test_content', 'test_author')
