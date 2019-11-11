@@ -7,6 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Db is sql struct
 var Db *sql.DB
 
 // connect to the Db
@@ -23,7 +24,7 @@ func init() {
 // Get a single post
 func retrieve(id int) (post Post, err error) {
 	post = Post{}
-	err = Db.QueryRow("select id, content, author from posts where id = $1", id).Scan(&post.Id, &post.Content, &post.Author)
+	err = Db.QueryRow("select id, content, author from posts where id = $1", id).Scan(&post.ID, &post.Content, &post.Author)
 	return
 }
 
@@ -35,18 +36,18 @@ func (post *Post) create() (err error) {
 		return
 	}
 	defer stmt.Close()
-	err = stmt.QueryRow(post.Content, post.Author).Scan(&post.Id)
+	err = stmt.QueryRow(post.Content, post.Author).Scan(&post.ID)
 	return
 }
 
 // Update a post
 func (post *Post) update() (err error) {
-	_, err = Db.Exec("update posts set content = $2, author = $3 where id = $1", post.Id, post.Content, post.Author)
+	_, err = Db.Exec("update posts set content = $2, author = $3 where id = $1", post.ID, post.Content, post.Author)
 	return
 }
 
 // Delete a post
 func (post *Post) delete() (err error) {
-	_, err = Db.Exec("delete from posts where id = $1", post.Id)
+	_, err = Db.Exec("delete from posts where id = $1", post.ID)
 	return
 }

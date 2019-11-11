@@ -33,7 +33,7 @@ func TestHandleGet(t *testing.T) {
 	}
 	var post Post
 	json.Unmarshal(writer.Body.Bytes(), &post)
-	if post.Id != 1 {
+	if post.ID != 1 {
 		t.Error("Cannot retrieve JSON post")
 	}
 }

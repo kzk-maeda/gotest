@@ -8,8 +8,9 @@ import (
 	"strconv"
 )
 
+// Post is type
 type Post struct {
-	Id      int    `json:"id"`
+	ID      int    `json:"id"`
 	Content string `json:"content"`
 	Author  string `json:"author"`
 }
