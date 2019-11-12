@@ -28,6 +28,12 @@ func retrieve(id int) (post Post, err error) {
 	return
 }
 
+func (post *Post) fetch(id int) (err error) {
+	err = post.Db.QueryRow("select id, content, author from posts where id = $1", id).
+		Scan(&post.ID, &post.Content, &post.Author)
+	return
+}
+
 // Create a new post
 func (post *Post) create() (err error) {
 	statement := "insert into posts (content, author) values ($1, $2) returning id"

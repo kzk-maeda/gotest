@@ -20,7 +20,7 @@ func TestMain(m *testing.M) {
 
 func setUp() {
 	mux = http.NewServeMux()
-	mux.HandleFunc("/post/", handleRequest)
+	mux.HandleFunc("/post/", handleRequest(&FakePost{}))
 	writer = httptest.NewRecorder()
 }
 
